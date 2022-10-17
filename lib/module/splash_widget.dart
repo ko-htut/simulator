@@ -27,7 +27,9 @@ class _SplashWigetState extends State<SplashWiget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text("Sumulator Splash Screen")),
+      body: Center(
+        child: Text("Sumulator Splash Screen"),
+      ),
     );
   }
 }
