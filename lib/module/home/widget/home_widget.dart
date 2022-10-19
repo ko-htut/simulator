@@ -84,14 +84,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: (_selectedIndex == 1)
-                            ? BillerProductWidget()
-                            : (_selectedIndex == 2)
-                                ? const EnquiryWidget()
-                                : (_selectedIndex == 3)
-                                    ? const ConfirmWidget()
-                                    : const BillerCategoryWidget()),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: getWidget(_selectedIndex),
+                    ),
                   ),
                 ],
               ),
@@ -176,5 +171,20 @@ class _HomeWidgetState extends State<HomeWidget> {
     //     ]),
     //   ),
     // );
+  }
+
+  Widget getWidget(int selectedIndex) {
+    switch (selectedIndex) {
+      case 1:
+        return const BillerProductWidget();
+      case 2:
+        return const EnquiryWidget();
+      case 3:
+        return const ConfirmWidget();
+      case 4:
+        return const BillerCategoryWidget();
+      default:
+        return const BillerProductWidget();
+    }
   }
 }

@@ -11,24 +11,24 @@ abstract class APIService extends ChopperService {
   @Post(path: '/GetBillerCategory')
   @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
   Future<Response<BillerCategoryResponse>> billerCategory(
-   @Body() Map body
+   @Body() Map<dynamic, dynamic> body
   );
 
   @Post(path: '/GetBillerProduct')
   @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
   Future<Response<BillerCategoryResponse>> billerProduct(
-    @Body() Map body
+    @Body() Map<dynamic, dynamic> body
   );
 
   @Post(path: '/Enquiry')
   @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
   Future<Response<BillerCategoryResponse>> enquiry(
-    @Body() Map body
+    @Body() Map<dynamic, dynamic> body
   );
 
   @Post(path: '/Confirm')
   @FactoryConverter(request: FormUrlEncodedConverter.requestFactory)
   Future<Response<BillerCategoryResponse>> comfirm(
-   @Body() Map body
+   @Body() Map<dynamic, dynamic> body
   );
 }

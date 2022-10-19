@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -18,14 +20,37 @@ class _BillerCategoryWidgetState extends State<BillerCategoryWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
-      return _item(name: 'Biller Category');
+      return Column(
+        children: [
+          _item(name: 'Biller Category'),
+          Observer(builder: (context) {
+            if (_billerCategoryStore.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (_billerCategoryStore.errorMessage.isNotEmpty) {
+              return Container(
+                width: double.infinity,
+                margin: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5), color: Colors.red),
+                child: Text(
+                  _billerCategoryStore.errorMessage,
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
+            }
+            return const SizedBox();
+          }),
+        ],
+      );
     });
   }
 
@@ -129,7 +154,7 @@ class _BillerCategoryWidgetState extends State<BillerCategoryWidget> {
                         children: [
                           const Text("Response Data"),
                           (_billerCategoryStore.billerCategoryResponse == null)
-                              ? Text("Respnse is null")
+                              ? const Text("Respnse is null")
                               : JsonViewer(const {
                                   "ChannelCode": "AbankMM",
                                   "BillerCode": "OoredooEload"
@@ -254,7 +279,8 @@ class _BillerCategoryWidgetState extends State<BillerCategoryWidget> {
         );
       }
       return GestureDetector(
-        onTap: () => _billerCategoryStore.getBillerCategory(),
+        onTap: () => _billerCategoryStore.getBillerCategory(
+            tchannelCode: '', tbillerCode: ''),
         child: Container(
           height: 45,
           width: MediaQuery.of(context).size.width > 600
@@ -262,7 +288,8 @@ class _BillerCategoryWidgetState extends State<BillerCategoryWidget> {
               : double.infinity,
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: Colors.indigoAccent),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.indigoAccent),
           child: Center(
             child: Text(
               name,
