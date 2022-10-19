@@ -44,6 +44,7 @@ dependencies:
   built_collection: ^5.1.1
   responsive_framework: ^0.2.0
   json_tree_viewer: ^0.0.2
+  flutter_json_viewer: ^1.0.1
 
 dev_dependencies:
   flutter_test:
