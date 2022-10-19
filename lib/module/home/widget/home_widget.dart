@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import 'package:simulator/module/home/widget/biller_category_widget.dart';
+import 'package:simulator/module/home/widget/biller_product_widget.dart';
+import 'package:simulator/module/home/widget/confirm_widget.dart';
+import 'package:simulator/module/home/widget/enquiry_widget.dart';
+import 'package:simulator/module/home/widget/menu_widget.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -10,304 +15,84 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  bool _obscureText = true;
+  final bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home"),
-      ),
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(children: [
-          _item(name: "Biller Category"),
-          _item(name: "Biller Product"),
-          _item(name: "Enquiry"),
-          _item(name: "Confirm"),
-        ]),
-      ),
-    );
-  }
+    final screenWidth = MediaQuery.of(context).size.width;
 
-  Widget _item({
-    required String name,
-  }) {
-    return MediaQuery.of(context).size.width > 600
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        decoration: _myInputDecoration(
-                          hint: 'Enter your Channel Code',
-                        ),
-                        cursorColor: Colors.pink,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please Enter your Channel Code';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        decoration: _myInputDecoration(
-                          hint: 'Enter your Biller Code',
-                        ),
-                        cursorColor: Colors.pink,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please Enter your Biller Code';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      _buttom(
-                        name: name,
-                      ),
-                    ],
-                  ),
-                ),
+    if (screenWidth >= 600) {
+      // wide screen: menu on the left, content on the right
+      return Scaffold(
+        appBar: AppBar(
+          // 3. add a non-null leading argument if we have a drawer
+          // leading: hasDrawer
+          //     ? IconButton(
+          //         icon: Icon(Icons.menu),
+          //         // 4. open the drawer if we have one
+          //         onPressed:
+          //             hasDrawer ? () => ancestorScaffold!.openDrawer() : null,
+          //       )
+          //     : null,
+          title: const Text("Home"),
+          // actions: actions,
+        ),
+        body: Row(
+          children: [
+            const SizedBox(
+              width: 240,
+              child: MenuWidget(),
+            ),
+            Container(width: 0.5, color: Colors.black),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(children: [
+                  const BillerCategoryWidget(),
+                  BillerProductWidget(),
+                  const EnquiryWidget(),
+                  const ConfirmWidget()
+                ]),
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200]),
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Request Data"),
-                          JsonViewer(const {
-                            "ChannelCode": "AbankMM",
-                            "BillerCode": "OoredooEload"
-                          }),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200]),
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Response Data"),
-                          JsonViewer(const {
-                            "ErrorCode": "00",
-                            "ErrorMessage": "Success",
-                            "Detail":
-                                "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
-                            "ChannelRefId": "KH090003",
-                            "BillerRefId": null,
-                            "BpaTxnId": "40DA07EA79",
-                            "ChannelAmount": 3250.00,
-                            "TransactionAmount": 3000
-                          }),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.text,
-                decoration: _myInputDecoration(
-                  hint: 'Enter your Channel Code',
-                ),
-                cursorColor: Colors.pink,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Enter your Channel Code';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.text,
-                decoration: _myInputDecoration(
-                  hint: 'Enter your Biller Code',
-                ),
-                cursorColor: Colors.pink,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Enter your Biller Code';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _buttom(
-                name: name,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.grey[200]),
-                    padding: const EdgeInsets.all(5),
-                    margin: const EdgeInsets.only(top: 5, bottom: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Request Data"),
-                        JsonViewer(const {
-                          "ChannelCode": "AbankMM",
-                          "BillerCode": "OoredooEload"
-                        }),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.grey[200]),
-                    padding: const EdgeInsets.all(5),
-                    margin: const EdgeInsets.only(top: 5, bottom: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Response Data"),
-                        JsonViewer(const {
-                          "ErrorCode": "00",
-                          "ErrorMessage": "Success",
-                          "Detail":
-                              "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
-                          "ChannelRefId": "KH090003",
-                          "BillerRefId": null,
-                          "BpaTxnId": "40DA07EA79",
-                          "ChannelAmount": 3250.00,
-                          "TransactionAmount": 3000
-                        }),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-  }
+            )
+          ],
+        ),
+      );
+    } else {
+      // narrow screen: show content, menu inside drawer
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Home"),
+        ),
+        body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(children: [
+            const BillerCategoryWidget(),
+            BillerProductWidget(),
+            const EnquiryWidget(),
+            const ConfirmWidget()
+          ]),
+        ),
+        drawer: const SizedBox(
+          width: 240,
+          child: Drawer(child: MenuWidget()),
+        ),
+      );
+    }
 
-  Widget _buttom({
-    required String name,
-  }) {
-    return Container(
-      height: 45,
-      width: MediaQuery.of(context).size.width > 600
-          ? MediaQuery.of(context).size.width / 2
-          : double.infinity,
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5), color: Colors.indigoAccent),
-      child: Center(
-        child: Text(
-          name,
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-
-  void _fieldFocusChange(
-      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
-    currentFocus.unfocus();
-    FocusScope.of(context).requestFocus(nextFocus);
-  }
-
-  InputDecoration _myInputDecoration({
-    required String hint,
-  }) {
-    return InputDecoration(
-      filled: true,
-      hintText: hint,
-      hintStyle: const TextStyle(
-        fontWeight: FontWeight.w500,
-      ),
-      contentPadding: const EdgeInsets.only(
-        left: 12,
-        top: 12,
-        bottom: 12,
-      ),
-      fillColor: ColorUtils.colorD3E9FF,
-      border: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: ColorUtils.colorD3E9FF,
-          width: 1.0,
-        ),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: ColorUtils.colorD3E9FF,
-          width: 1.0,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: ColorUtils.secondaryColor,
-          width: 2.0,
-        ),
-      ),
-    );
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text("Home"),
+    //   ),
+    //   body: SingleChildScrollView(
+    //     physics: const AlwaysScrollableScrollPhysics(),
+    //     child: Column(children: [
+    //       const BillerCategoryWidget(),
+    //       BillerProductWidget(),
+    //       const EnquiryWidget(),
+    //       const ConfirmWidget()
+    //     ]),
+    //   ),
+    // );
   }
 }
