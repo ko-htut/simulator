@@ -17,122 +17,150 @@ class _HomeWidgetState extends State<HomeWidget> {
       ),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            _buttom(name: "Biller Category"),
-            const Text("Sent Qureery"),
-            JsonViewer(const {
-              "ErrorCode": "00",
-              "ErrorMessage": "Success",
-              "CategoryList": [
-                {
-                  "CategoryCode": "topup",
-                  "CategoryName": "Top Up ( don't delete plz )"
-                }
-              ]
-            }),
-            const Text("Respnse "),
-            JsonViewer(
-              const {
-                "ErrorCode": "00",
-                "ErrorMessage": "Success",
-                "CategoryList": [
-                  {
-                    "CategoryCode": "topup",
-                    "CategoryName": "Top Up ( don't delete plz )"
-                  }
-                ]
-              },
-            ),
-            _buttom(name: "Biller Product"),
-            const Text("Sent Qureery"),
-            JsonViewer(
-                const {"channelCode": "AbankMM", "billerCode": "OoredooEload"}),
-            const Text("Respnse "),
-            JsonViewer(const {
-              "ErrorCode": "00",
-              "ErrorMessage": "Success",
-              "BillerCategory": null,
-              "BillerCode": "OoredooEload",
-              "BillerName": null,
-              "BillerLogo": null,
-              "BillerCountry": null,
-              "BillerCurrency": null,
-              "ProductList": [
-                {
-                  "ProductCode": "500",
-                  "ProductName": "500",
-                  "ProductAmount": "500"
-                },
-                {
-                  "ProductCode": "500",
-                  "ProductName": "500",
-                  "ProductAmount": "500"
-                },
-                {
-                  "ProductCode": "500",
-                  "ProductName": "500",
-                  "ProductAmount": "500"
-                },
-                {
-                  "ProductCode": "500",
-                  "ProductName": "500",
-                  "ProductAmount": "500"
-                },
-                {
-                  "ProductCode": "500",
-                  "ProductName": "500",
-                  "ProductAmount": "500"
-                },
-              ]
-            }),
-            _buttom(name: "Enquiry"),
-            const Text("Sent Qureery"),
-            JsonViewer(const {
-              "ChannelCode": "AbankMM",
-              "BillerCode": "OoredooEload",
-              "Detail": "{\"Deno\":\"1000\",\"MobileNumber\":\"09964233241\"}"
-            }),
-            const Text("Respnse "),
-            JsonViewer(const {
-              "ErrorCode": "00",
-              "ErrorMessage": "Success.",
-              "ChannelAmount": 1150.00,
-              "TransactionAmount": 1000,
-              "Detail": "{\"Deno\":\"1000\",\"MobileNumber\":\"09964233241\"}"
-            }),
-            _buttom(name: "Confirm"),
-            const Text("Sent Qureery"),
-            JsonViewer(
-              const {
-                "ChannelCode": "AbankMM",
-                "BillerCode": "OoredooEload",
-                "ChannelRefId": "KH090003",
-                "TransactionAmount": 3000,
-                "Detail": "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}"
-              },
-            ),
-            const Text("Respnse "),
-            JsonViewer(const {
-              "ErrorCode": "00",
-              "ErrorMessage": "Success",
-              "Detail": "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
-              "ChannelRefId": "KH090003",
-              "BillerRefId": null,
-              "BpaTxnId": "40DA07EA79",
-              "ChannelAmount": 3250.00,
-              "TransactionAmount": 3000
-            }),
-          ],
-        ),
+        child: Column(children: [
+          _item(name: "Biller Category"),
+          _item(name: "Biller Product"),
+          _item(name: "Enquiry"),
+          _item(name: "Confirm"),
+        ]),
       ),
     );
   }
 
-  Widget _buttom({required String name}) {
+  Widget _item({
+    required String name,
+  }) {
+    return MediaQuery.of(context).size.width > 600
+        ? Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    _buttom(
+                      name: name,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.grey[200]),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.only(top: 5, bottom: 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("Request Data"),
+                          JsonViewer(const {
+                            "ChannelCode": "AbankMM",
+                            "BillerCode": "OoredooEload"
+                          }),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.grey[200]),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.only(top: 5, bottom: 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("Response Data"),
+                          JsonViewer(const {
+                            "ErrorCode": "00",
+                            "ErrorMessage": "Success",
+                            "Detail":
+                                "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
+                            "ChannelRefId": "KH090003",
+                            "BillerRefId": null,
+                            "BpaTxnId": "40DA07EA79",
+                            "ChannelAmount": 3250.00,
+                            "TransactionAmount": 3000
+                          }),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        : Column(
+            children: [
+              _buttom(
+                name: name,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.grey[200]),
+                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.only(top: 5, bottom: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Request Data"),
+                        JsonViewer(const {
+                          "ChannelCode": "AbankMM",
+                          "BillerCode": "OoredooEload"
+                        }),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.grey[200]),
+                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.only(top: 5, bottom: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Response Data"),
+                        JsonViewer(const {
+                          "ErrorCode": "00",
+                          "ErrorMessage": "Success",
+                          "Detail":
+                              "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
+                          "ChannelRefId": "KH090003",
+                          "BillerRefId": null,
+                          "BpaTxnId": "40DA07EA79",
+                          "ChannelAmount": 3250.00,
+                          "TransactionAmount": 3000
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+  }
+
+  Widget _buttom({
+    required String name,
+  }) {
     return Container(
-      height: 65,
-      width: double.infinity,
+      height: 45,
+      width: MediaQuery.of(context).size.width > 600
+          ? MediaQuery.of(context).size.width / 3
+          : double.infinity,
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5), color: Colors.indigoAccent),
