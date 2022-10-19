@@ -45,14 +45,39 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
             Container(width: 0.5, color: Colors.black),
             Expanded(
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(children: [
-                  const BillerCategoryWidget(),
-                  BillerProductWidget(),
-                  const EnquiryWidget(),
-                  const ConfirmWidget()
-                ]),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: const [
+                        Chip(
+                          label: Text("Biller Category"),
+                        ),
+                        Chip(
+                          label: Text("Biller Product"),
+                        ),
+                        Chip(
+                          label: Text("Enquiry"),
+                        ),
+                        Chip(
+                          label: Text("Confirm"),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(children: [
+                        const BillerCategoryWidget(),
+                        BillerProductWidget(),
+                        const EnquiryWidget(),
+                        const ConfirmWidget()
+                      ]),
+                    ),
+                  ),
+                ],
               ),
             )
           ],
@@ -62,16 +87,41 @@ class _HomeWidgetState extends State<HomeWidget> {
       // narrow screen: show content, menu inside drawer
       return Scaffold(
         appBar: AppBar(
-          title: Text("Home"),
+          title: const Text("Home"),
         ),
-        body: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(children: [
-            const BillerCategoryWidget(),
-            BillerProductWidget(),
-            const EnquiryWidget(),
-            const ConfirmWidget()
-          ]),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: const [
+                  Chip(
+                    label: Text("Biller Category"),
+                  ),
+                  Chip(
+                    label: Text("Biller Product"),
+                  ),
+                  Chip(
+                    label: Text("Enquiry"),
+                  ),
+                  Chip(
+                    label: Text("Confirm"),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(children: [
+                  const BillerCategoryWidget(),
+                  BillerProductWidget(),
+                  const EnquiryWidget(),
+                  const ConfirmWidget()
+                ]),
+              ),
+            ),
+          ],
         ),
         drawer: const SizedBox(
           width: 240,

@@ -3,7 +3,7 @@ import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class EnquiryWidget extends StatefulWidget {
- const EnquiryWidget({Key? key}) : super(key: key);
+  const EnquiryWidget({Key? key}) : super(key: key);
 
   @override
   State<EnquiryWidget> createState() => _EnquiryWidgetState();
@@ -72,6 +72,48 @@ class _EnquiryWidgetState extends State<EnquiryWidget> {
                       const SizedBox(
                         height: 10,
                       ),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        decoration: _myInputDecoration(
+                          hint: 'Enter your Deno Code',
+                        ),
+                        cursorColor: Colors.pink,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please Enter your Deno Code';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        decoration: _myInputDecoration(
+                          hint: 'Enter your Mobile Number Code',
+                        ),
+                        cursorColor: Colors.pink,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please Enter your Mobile Number Code';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       _buttom(
                         name: name,
                       ),
@@ -97,7 +139,9 @@ class _EnquiryWidgetState extends State<EnquiryWidget> {
                           const Text("Request Data"),
                           JsonViewer(const {
                             "ChannelCode": "AbankMM",
-                            "BillerCode": "OoredooEload"
+                            "BillerCode": "OoredooEload",
+                            "Detail":
+                                "{\"Deno\":\"1000\",\"MobileNumber\":\"09964233241\"}"
                           }),
                         ],
                       ),
@@ -115,14 +159,11 @@ class _EnquiryWidgetState extends State<EnquiryWidget> {
                           const Text("Response Data"),
                           JsonViewer(const {
                             "ErrorCode": "00",
-                            "ErrorMessage": "Success",
+                            "ErrorMessage": "Success.",
+                            "ChannelAmount": 1150.00,
+                            "TransactionAmount": 1000,
                             "Detail":
-                                "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
-                            "ChannelRefId": "KH090003",
-                            "BillerRefId": null,
-                            "BpaTxnId": "40DA07EA79",
-                            "ChannelAmount": 3250.00,
-                            "TransactionAmount": 3000
+                                "{\"Deno\":\"1000\",\"MobileNumber\":\"09964233241\"}"
                           }),
                         ],
                       ),
