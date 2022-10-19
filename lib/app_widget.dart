@@ -6,7 +6,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'My Smart App',
+      title: 'Api Simulator',
       theme: ThemeData(useMaterial3: true),
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,

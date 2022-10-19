@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 import 'package:simulator/module/home/widget/biller_category_widget.dart';
 import 'package:simulator/module/home/widget/biller_product_widget.dart';
 import 'package:simulator/module/home/widget/confirm_widget.dart';
 import 'package:simulator/module/home/widget/enquiry_widget.dart';
 import 'package:simulator/module/home/widget/menu_widget.dart';
-import 'package:simulator/utils/color_utils.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -16,6 +14,8 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   final bool _obscureText = true;
+
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -50,32 +50,56 @@ class _HomeWidgetState extends State<HomeWidget> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: const [
-                        Chip(
-                          label: Text("Biller Category"),
+                      children: [
+                        ChoiceChip(
+                          label: const Text("Biller Category"),
+                          selected: _selectedIndex >= 0,
+                          onSelected: (value) => setState(() {
+                            _selectedIndex = 0;
+                          }),
                         ),
-                        Chip(
-                          label: Text("Biller Product"),
+                        ChoiceChip(
+                          label: const Text("Biller Product"),
+                          selected: _selectedIndex >= 1,
+                          onSelected: (value) => setState(() {
+                            _selectedIndex = 1;
+                          }),
                         ),
-                        Chip(
-                          label: Text("Enquiry"),
+                        ChoiceChip(
+                          label: const Text("Enquiry"),
+                          selected: _selectedIndex >= 2,
+                          onSelected: (value) => setState(() {
+                            _selectedIndex = 2;
+                          }),
                         ),
-                        Chip(
-                          label: Text("Confirm"),
+                        ChoiceChip(
+                          label: const Text("Confirm"),
+                          selected: _selectedIndex >= 3,
+                          onSelected: (value) => setState(() {
+                            _selectedIndex = 3;
+                          }),
                         ),
                       ],
                     ),
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(children: [
-                        const BillerCategoryWidget(),
-                        BillerProductWidget(),
-                        const EnquiryWidget(),
-                        const ConfirmWidget()
-                      ]),
-                    ),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: (_selectedIndex == 1)
+                            ? BillerProductWidget()
+                            : (_selectedIndex == 2)
+                                ? const EnquiryWidget()
+                                : (_selectedIndex == 3)
+                                    ? const ConfirmWidget()
+                                    : const EnquiryWidget()
+
+                        // child: Column(children: [
+                        //   const BillerCategoryWidget(),
+                        //   BillerProductWidget(),
+                        //   const EnquiryWidget(),
+                        //   const ConfirmWidget()
+                        // ]),
+                        ),
                   ),
                 ],
               ),
@@ -93,33 +117,47 @@ class _HomeWidgetState extends State<HomeWidget> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: const [
-                  Chip(
-                    label: Text("Biller Category"),
-                  ),
-                  Chip(
-                    label: Text("Biller Product"),
-                  ),
-                  Chip(
-                    label: Text("Enquiry"),
-                  ),
-                  Chip(
-                    label: Text("Confirm"),
-                  ),
-                ],
-              ),
+              child: Row(children: [
+                ChoiceChip(
+                  label: const Text("Biller Category"),
+                  selected: _selectedIndex == 0,
+                  onSelected: (value) => setState(() {
+                    _selectedIndex = 0;
+                  }),
+                ),
+                ChoiceChip(
+                  label: const Text("Biller Product"),
+                  selected: _selectedIndex == 1,
+                  onSelected: (value) => setState(() {
+                    _selectedIndex = 1;
+                  }),
+                ),
+                ChoiceChip(
+                  label: const Text("Enquiry"),
+                  selected: _selectedIndex == 2,
+                  onSelected: (value) => setState(() {
+                    _selectedIndex = 2;
+                  }),
+                ),
+                ChoiceChip(
+                  label: const Text("Confirm"),
+                  selected: _selectedIndex == 3,
+                  onSelected: (value) => setState(() {
+                    _selectedIndex = 3;
+                  }),
+                ),
+              ]),
             ),
             Expanded(
               child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(children: [
-                  const BillerCategoryWidget(),
-                  BillerProductWidget(),
-                  const EnquiryWidget(),
-                  const ConfirmWidget()
-                ]),
-              ),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: (_selectedIndex == 1)
+                      ? BillerProductWidget()
+                      : (_selectedIndex == 2)
+                          ? const EnquiryWidget()
+                          : (_selectedIndex == 3)
+                              ? const ConfirmWidget()
+                              : const EnquiryWidget()),
             ),
           ],
         ),

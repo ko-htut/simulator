@@ -5,8 +5,6 @@ import 'module/home/home_module.dart';
 import 'module/not_found_widget.dart';
 import 'module/splash_widget.dart';
 
-import 'guards/auth_guards.dart';
-
 class AppModule extends Module {
   @override
   List<Bind> get binds => [
@@ -19,7 +17,7 @@ class AppModule extends Module {
         ChildRoute(AppRoutes.root,
             child: (context, args) => const SplashWiget()),
         ModuleRoute(AppRoutes.home, module: HomeModule(), guards: [
-          AuthGuard(),
+          // AuthGuard(),
         ]),
         ModuleRoute(AppRoutes.auth, module: HomeModule()),
         WildcardRoute(child: (context, args) => const NotFoundWidget()),

@@ -120,6 +120,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  chopper:
+    dependency: "direct main"
+    description:
+      name: chopper
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
+  chopper_generator:
+    dependency: "direct dev"
+    description:
+      name: chopper_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
   cli_util:
     dependency: transitive
     description:
@@ -270,6 +284,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.5"
   http_multi_server:
     dependency: transitive
     description:
@@ -383,7 +404,7 @@ packages:
     source: hosted
     version: "2.1.1"
   mobx_codegen:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: mobx_codegen
       url: "https://pub.dartlang.org"
