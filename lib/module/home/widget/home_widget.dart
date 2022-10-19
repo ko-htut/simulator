@@ -49,7 +49,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
+                    child: Wrap(
                       children: [
                         ChoiceChip(
                           label: const Text("Biller Category"),
@@ -109,7 +109,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(children: [
+              child: Wrap(children: [
                 ChoiceChip(
                   label: const Text("Biller Category"),
                   selected: _selectedIndex == 0,

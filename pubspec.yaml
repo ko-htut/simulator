@@ -46,6 +46,8 @@ dependencies:
   flutter_json_viewer: ^1.0.1
   mobx: ^2.1.1
   chopper: ^4.0.5
+  flutter_mobx: ^2.0.6+4
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:

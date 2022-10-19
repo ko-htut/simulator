@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simulator/module/home/store/biller_category_store.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class BillerCategoryWidget extends StatefulWidget {
- const BillerCategoryWidget({Key? key}) : super(key: key);
+  const BillerCategoryWidget({Key? key}) : super(key: key);
 
   @override
   State<BillerCategoryWidget> createState() => _BillerCategoryWidgetState();
 }
 
 class _BillerCategoryWidgetState extends State<BillerCategoryWidget> {
+  final BillerCategoryStore _billerCategoryStore =
+      Modular.get<BillerCategoryStore>();
+
   @override
-  Widget build(BuildContext context) {
-    return _item(name: 'Biller Category');
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Observer(builder: (context) {
+      return _item(name: 'Biller Category');
+    });
+  }
 
-   Widget _item({
+  Widget _item({
     required String name,
   }) {
     return MediaQuery.of(context).size.width > 600
@@ -108,23 +121,19 @@ class _BillerCategoryWidgetState extends State<BillerCategoryWidget> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200]),
                       padding: const EdgeInsets.all(5),
+                      width: double.infinity,
                       margin: const EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text("Response Data"),
-                          JsonViewer(const {
-                            "ErrorCode": "00",
-                            "ErrorMessage": "Success",
-                            "Detail":
-                                "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
-                            "ChannelRefId": "KH090003",
-                            "BillerRefId": null,
-                            "BpaTxnId": "40DA07EA79",
-                            "ChannelAmount": 3250.00,
-                            "TransactionAmount": 3000
-                          }),
+                          (_billerCategoryStore.billerCategoryResponse == null)
+                              ? Text("Respnse is null")
+                              : JsonViewer(const {
+                                  "ChannelCode": "AbankMM",
+                                  "BillerCode": "OoredooEload"
+                                }),
                         ],
                       ),
                     ),
@@ -238,21 +247,31 @@ class _BillerCategoryWidgetState extends State<BillerCategoryWidget> {
   Widget _buttom({
     required String name,
   }) {
-    return Container(
-      height: 45,
-      width: MediaQuery.of(context).size.width > 600
-          ? MediaQuery.of(context).size.width / 2
-          : double.infinity,
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5), color: Colors.indigoAccent),
-      child: Center(
-        child: Text(
-          name,
-          style: const TextStyle(color: Colors.white),
+    return Observer(builder: (context) {
+      if (_billerCategoryStore.isLoading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return GestureDetector(
+        onTap: () => _billerCategoryStore.getBillerCategory(),
+        child: Container(
+          height: 45,
+          width: MediaQuery.of(context).size.width > 600
+              ? MediaQuery.of(context).size.width / 2
+              : double.infinity,
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5), color: Colors.indigoAccent),
+          child: Center(
+            child: Text(
+              name,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   void _fieldFocusChange(

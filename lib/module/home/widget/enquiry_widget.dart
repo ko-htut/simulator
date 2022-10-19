@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simulator/module/home/store/enquiry_store.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class EnquiryWidget extends StatefulWidget {
@@ -10,6 +12,14 @@ class EnquiryWidget extends StatefulWidget {
 }
 
 class _EnquiryWidgetState extends State<EnquiryWidget> {
+  final EnquiryStore _enquiryStore = Modular.get<EnquiryStore>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _item(name: 'Enquiry');

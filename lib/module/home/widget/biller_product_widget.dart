@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simulator/module/home/store/biller_product_store.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class BillerProductWidget extends StatefulWidget {
-  BillerProductWidget({Key? key}) : super(key: key);
+ const BillerProductWidget({Key? key}) : super(key: key);
 
   @override
   State<BillerProductWidget> createState() => _BillerProductWidgetState();
 }
 
 class _BillerProductWidgetState extends State<BillerProductWidget> {
+
+  // final BillerProductStore _billerProductStore =
+  //     Modular.get<BillerProductStore>();
+
+      @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return _item(name: 'Biller Product');

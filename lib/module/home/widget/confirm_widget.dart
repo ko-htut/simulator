@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simulator/module/home/store/comfirm_store.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class ConfirmWidget extends StatefulWidget {
@@ -10,6 +12,16 @@ class ConfirmWidget extends StatefulWidget {
 }
 
 class _ConfirmWidgetState extends State<ConfirmWidget> {
+
+  final ComfirmStore _comfirmStore =
+      Modular.get<ComfirmStore>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _item(name: 'Comfirm');
