@@ -91,15 +91,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 ? const EnquiryWidget()
                                 : (_selectedIndex == 3)
                                     ? const ConfirmWidget()
-                                    : const EnquiryWidget()
-
-                        // child: Column(children: [
-                        //   const BillerCategoryWidget(),
-                        //   BillerProductWidget(),
-                        //   const EnquiryWidget(),
-                        //   const ConfirmWidget()
-                        // ]),
-                        ),
+                                    : const BillerCategoryWidget()),
                   ),
                 ],
               ),
@@ -142,9 +134,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ChoiceChip(
                   label: const Text("Confirm"),
                   selected: _selectedIndex == 3,
-                  onSelected: (value) => setState(() {
-                    _selectedIndex = 3;
-                  }),
+                  onSelected: (value) => setState(
+                    () {
+                      _selectedIndex = 3;
+                    },
+                  ),
                 ),
               ]),
             ),
@@ -157,7 +151,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ? const EnquiryWidget()
                           : (_selectedIndex == 3)
                               ? const ConfirmWidget()
-                              : const EnquiryWidget()),
+                              : const BillerCategoryWidget()),
             ),
           ],
         ),
