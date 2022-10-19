@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import 'package:simulator/utils/color_utils.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -9,6 +10,8 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,14 +35,63 @@ class _HomeWidgetState extends State<HomeWidget> {
   }) {
     return MediaQuery.of(context).size.width > 600
         ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  children: [
-                    _buttom(
-                      name: name,
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        decoration: _myInputDecoration(
+                          hint: 'Enter your Channel Code',
+                        ),
+                        cursorColor: Colors.pink,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please Enter your Channel Code';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        decoration: _myInputDecoration(
+                          hint: 'Enter your Biller Code',
+                        ),
+                        cursorColor: Colors.pink,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please Enter your Biller Code';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      _buttom(
+                        name: name,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Expanded(
@@ -96,7 +148,51 @@ class _HomeWidgetState extends State<HomeWidget> {
             ],
           )
         : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              TextFormField(
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.text,
+                decoration: _myInputDecoration(
+                  hint: 'Enter your Channel Code',
+                ),
+                cursorColor: Colors.pink,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please Enter your Channel Code';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.text,
+                decoration: _myInputDecoration(
+                  hint: 'Enter your Biller Code',
+                ),
+                cursorColor: Colors.pink,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please Enter your Biller Code';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               _buttom(
                 name: name,
               ),
@@ -159,7 +255,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     return Container(
       height: 45,
       width: MediaQuery.of(context).size.width > 600
-          ? MediaQuery.of(context).size.width / 3
+          ? MediaQuery.of(context).size.width / 2
           : double.infinity,
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -168,6 +264,48 @@ class _HomeWidgetState extends State<HomeWidget> {
         child: Text(
           name,
           style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  InputDecoration _myInputDecoration({
+    required String hint,
+  }) {
+    return InputDecoration(
+      filled: true,
+      hintText: hint,
+      hintStyle: const TextStyle(
+        fontWeight: FontWeight.w500,
+      ),
+      contentPadding: const EdgeInsets.only(
+        left: 12,
+        top: 12,
+        bottom: 12,
+      ),
+      fillColor: ColorUtils.colorD3E9FF,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: ColorUtils.colorD3E9FF,
+          width: 1.0,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: ColorUtils.colorD3E9FF,
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: ColorUtils.secondaryColor,
+          width: 2.0,
         ),
       ),
     );
