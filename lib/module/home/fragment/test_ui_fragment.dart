@@ -31,24 +31,139 @@ class _TestUIFragmentState extends State<TestUIFragment> {
 
   late TextEditingController channelNameController = TextEditingController();
   late TextEditingController billerCodeController = TextEditingController();
+  late TextEditingController mobileNumberController = TextEditingController();
 
   final FocusNode _channelNameFocus = FocusNode();
   final FocusNode _billerCodeFocus = FocusNode();
+  final FocusNode _mobileNumberFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _formList(),
-          ],
-        ),
+        child: _formList(),
       ),
     );
+  }
+
+  Widget _formList() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _field(
+            controller: channelNameController,
+            currnetfocusNode: _channelNameFocus,
+            text: "Channel Name",
+            hint: "Channel name",
+            validateEmptyMessage: "Channel name can not empty !!!",
+            onEditingComplete: () => _channelNameFocus.unfocus(),
+            onFieldSubmitted: () =>
+                _fieldFocusChange(context, _channelNameFocus, _billerCodeFocus),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          _field(
+            controller: billerCodeController,
+            currnetfocusNode: _billerCodeFocus,
+            text: "Biller Code",
+            hint: "Biller Code",
+            validateEmptyMessage: "Biller code can not empty !!!",
+            onFieldSubmitted: () => _fieldFocusChange(
+                context, _billerCodeFocus, _mobileNumberFocus),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          _field(
+            controller: mobileNumberController,
+            currnetfocusNode: _mobileNumberFocus,
+            text: "Mobile Number",
+            hint: "Mobile Number",
+            validateEmptyMessage: "Biller code can not empty !!!",
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          _dropDown(text: "Channel Type"),
+          const SizedBox(
+            height: 10,
+          ),
+          _dropDown(text: "Transaction Amount"),
+          const SizedBox(
+            height: 10,
+          ),
+          _buttom(name: 'Comfirm'),
+        ],
+      ),
+    );
+  }
+
+  Widget _dropDown({
+    required String text,
+  }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return (screenWidth >= 600)
+        ? Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(text),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Expanded(
+                child: DropdownButton<String>(
+                  items: <String>['A', 'B', 'C', 'D'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (_) {},
+                ),
+              ),
+              Expanded(
+                flex: (screenWidth >= 600)
+                    ? 2
+                    : (screenWidth >= 800)
+                        ? 4
+                        : (screenWidth >= 1000)
+                            ? 6
+                            : (screenWidth >= 1200)
+                                ? 8
+                                : (screenWidth >= 1500)
+                                    ? 10
+                                    : 12,
+                child: const SizedBox(),
+              ),
+            ],
+          )
+        : Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(text),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              DropdownButton<String>(
+                items: <String>['A', 'B', 'C', 'D'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
+            ],
+          );
   }
 
   Widget _field(
@@ -110,7 +225,7 @@ class _TestUIFragmentState extends State<TestUIFragment> {
                                 : (screenWidth >= 1500)
                                     ? 10
                                     : 12,
-                child: SizedBox(),
+                child: const SizedBox(),
               ),
             ],
           )
@@ -150,39 +265,6 @@ class _TestUIFragmentState extends State<TestUIFragment> {
               ),
             ],
           );
-  }
-
-  Widget _formList() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _field(
-            controller: channelNameController,
-            currnetfocusNode: _channelNameFocus,
-            text: "Channel Name",
-            hint: "Channel name",
-            validateEmptyMessage: "Channel name can not empty !!!",
-            onEditingComplete: () => _channelNameFocus.unfocus(),
-            onFieldSubmitted: () =>
-                _fieldFocusChange(context, _channelNameFocus, _billerCodeFocus),
-          ),
-          _field(
-            controller: billerCodeController,
-            currnetfocusNode: _billerCodeFocus,
-            text: "Biller Code",
-            hint: "Biller Code",
-            validateEmptyMessage: "Biller code can not empty !!!",
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          _buttom(name: 'Get Enquiry'),
-        ],
-      ),
-    );
   }
 
   Widget _buttom({
