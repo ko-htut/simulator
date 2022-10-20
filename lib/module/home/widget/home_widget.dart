@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simulator/module/home/fragment/dev_api_test_fragment.dart';
+import 'package:simulator/module/home/fragment/setting_fragment.dart';
+import 'package:simulator/module/home/fragment/test_ui_fragment.dart';
+import 'package:simulator/module/home/store/app_store.dart';
 import 'package:simulator/module/home/widget/biller_category_widget.dart';
 import 'package:simulator/module/home/widget/biller_product_widget.dart';
 import 'package:simulator/module/home/widget/confirm_widget.dart';
 import 'package:simulator/module/home/widget/enquiry_widget.dart';
 import 'package:simulator/module/home/widget/menu_widget.dart';
 
-class HomeWidget extends StatefulWidget {
-  const HomeWidget({Key? key}) : super(key: key);
+class HomeWidget extends StatelessWidget {
+   HomeWidget({Key? key}) : super(key: key);
 
-  @override
-  State<HomeWidget> createState() => _HomeWidgetState();
-}
-
-class _HomeWidgetState extends State<HomeWidget> {
-  final bool _obscureText = true;
-
-  int _selectedIndex = 0;
+  final AppStore _appStore = Modular.get<AppStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,62 +24,19 @@ class _HomeWidgetState extends State<HomeWidget> {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Home"),
-          // actions: actions,
         ),
         body: Row(
           children: [
-            const SizedBox(
+            SizedBox(
               width: 240,
               child: MenuWidget(),
             ),
             Container(width: 0.5, color: Colors.black),
             Expanded(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Wrap(
-                      children: [
-                        ChoiceChip(
-                          label: const Text("Biller Category"),
-                          selected: _selectedIndex >= 0,
-                          onSelected: (value) => setState(() {
-                            _selectedIndex = 0;
-                          }),
-                        ),
-                        ChoiceChip(
-                          label: const Text("Biller Product"),
-                          selected: _selectedIndex >= 1,
-                          onSelected: (value) => setState(() {
-                            _selectedIndex = 1;
-                          }),
-                        ),
-                        ChoiceChip(
-                          label: const Text("Enquiry"),
-                          selected: _selectedIndex >= 2,
-                          onSelected: (value) => setState(() {
-                            _selectedIndex = 2;
-                          }),
-                        ),
-                        ChoiceChip(
-                          label: const Text("Confirm"),
-                          selected: _selectedIndex >= 3,
-                          onSelected: (value) => setState(() {
-                            _selectedIndex = 3;
-                          }),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: getWidget(_selectedIndex),
-                    ),
-                  ),
-                ],
-              ),
-            )
+              child: Observer(builder: (context) {
+                return getFragment();
+              }),
+            ),
           ],
         ),
       );
@@ -89,52 +45,10 @@ class _HomeWidgetState extends State<HomeWidget> {
         appBar: AppBar(
           title: const Text("Home"),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Wrap(children: [
-                ChoiceChip(
-                  label: const Text("Biller Category"),
-                  selected: _selectedIndex == 0,
-                  onSelected: (value) => setState(() {
-                    _selectedIndex = 0;
-                  }),
-                ),
-                ChoiceChip(
-                  label: const Text("Biller Product"),
-                  selected: _selectedIndex == 1,
-                  onSelected: (value) => setState(() {
-                    _selectedIndex = 1;
-                  }),
-                ),
-                ChoiceChip(
-                  label: const Text("Enquiry"),
-                  selected: _selectedIndex == 2,
-                  onSelected: (value) => setState(() {
-                    _selectedIndex = 2;
-                  }),
-                ),
-                ChoiceChip(
-                  label: const Text("Confirm"),
-                  selected: _selectedIndex == 3,
-                  onSelected: (value) => setState(
-                    () {
-                      _selectedIndex = 3;
-                    },
-                  ),
-                ),
-              ]),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: getWidget(_selectedIndex),
-              ),
-            ),
-          ],
-        ),
-        drawer: const SizedBox(
+        body: Observer(builder: (context) {
+          return getFragment();
+        }),
+        drawer: SizedBox(
           width: 240,
           child: Drawer(child: MenuWidget()),
         ),
@@ -142,18 +56,16 @@ class _HomeWidgetState extends State<HomeWidget> {
     }
   }
 
-  Widget getWidget(int selectedIndex) {
-    switch (selectedIndex) {
+  Widget getFragment() {
+    switch (_appStore.drawerIndex) {
       case 0:
-        return const BillerCategoryWidget();
+        return const DevApiTestFragment();
       case 1:
-        return const BillerProductWidget();
+        return const TestUIFragment();
       case 2:
-        return const EnquiryWidget();
-      case 3:
-        return const ConfirmWidget();
+        return SettingFragment();
       default:
-        return const BillerCategoryWidget();
+        return const DevApiTestFragment();
     }
   }
 }

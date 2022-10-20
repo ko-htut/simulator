@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simulator/module/home/store/app_store.dart';
 
-class MenuWidget extends StatefulWidget {
- const MenuWidget({Key? key}) : super(key: key);
+class MenuWidget extends StatelessWidget {
+   MenuWidget({Key? key}) : super(key: key);
 
-  @override
-  State<MenuWidget> createState() => _MenuWidgetState();
-}
+  final AppStore _appStore = Modular.get<AppStore>();
 
-class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        PageListTile(
-          pageName: 'Home',
-          selectedPageName: 'Home',
-        ),
-        PageListTile(
-          pageName: 'Settings',
-        ),
-      ],
-    );
+    return Observer(builder: (context) {
+      return Column(
+        children: _appStore.menuList
+            .map(
+              (e) => PageListTile(
+                pageName: e,
+                selectedPageName: _appStore.indextitle,
+                onPressed: () => _appStore.setDrawerIndex(title: e),
+              ),
+            )
+            .toList(),
+      );
+    });
   }
 }
 
@@ -37,12 +39,9 @@ class PageListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      // show a check icon if the page is currently selected
-      // note: we use Opacity to ensure that all tiles have a leading widget
-      // and all the titles are left-aligned
       leading: Opacity(
         opacity: selectedPageName == pageName ? 1.0 : 0.0,
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
       ),
       title: Text(pageName),
       onTap: onPressed,
