@@ -37,6 +37,9 @@ class _TestUIFragmentState extends State<TestUIFragment> {
   final FocusNode _billerCodeFocus = FocusNode();
   final FocusNode _mobileNumberFocus = FocusNode();
 
+  String? _selectedValue;
+  List<String> listOfValue = ['1', '2', '3', '4', '5'];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -107,6 +110,7 @@ class _TestUIFragmentState extends State<TestUIFragment> {
     required String text,
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
+
     return (screenWidth >= 600)
         ? Row(
             children: [
@@ -118,16 +122,64 @@ class _TestUIFragmentState extends State<TestUIFragment> {
                 height: 8,
               ),
               Expanded(
-                child: DropdownButton<String>(
-                  items: <String>['A', 'B', 'C', 'D'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (_) {},
+                  child: DropdownButtonFormField(
+                isDense: true,
+                style: const TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600),
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(3),
+                  fillColor: const Color.fromARGB(255, 30, 115, 233),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(
+                      color: ColorUtils.colorD3E9FF,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: ColorUtils.colorD3E9FF,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: ColorUtils.colorD3E9FF,
+                    ),
+                  ),
                 ),
-              ),
+                value: _selectedValue,
+                hint: const Text(
+                  'choose one',
+                ),
+                isExpanded: true,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedValue = value;
+                  });
+                },
+                onSaved: (value) {
+                  setState(() {
+                    _selectedValue = value;
+                  });
+                },
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return "can't empty";
+                  } else {
+                    return null;
+                  }
+                },
+                items: listOfValue.map((String val) {
+                  return DropdownMenuItem(
+                    value: val,
+                    child: Text(
+                      val,
+                    ),
+                  );
+                }).toList(),
+              )),
               Expanded(
                 flex: (screenWidth >= 600)
                     ? 2
@@ -144,25 +196,81 @@ class _TestUIFragmentState extends State<TestUIFragment> {
               ),
             ],
           )
-        : Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Text(text),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              DropdownButton<String>(
-                items: <String>['A', 'B', 'C', 'D'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (_) {},
-              ),
-            ],
+        : SizedBox(
+            height: 75,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(text),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                DropdownButtonFormField(
+                  isDense: true,
+                  style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(3),
+                    fillColor: const Color.fromARGB(255, 30, 115, 233),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: ColorUtils.colorD3E9FF,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: ColorUtils.colorD3E9FF,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: ColorUtils.colorD3E9FF,
+                      ),
+                    ),
+                  ),
+                  value: _selectedValue,
+                  hint: const Text(
+                    'choose one',
+                  ),
+                  isExpanded: true,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedValue = value;
+                    });
+                  },
+                  onSaved: (value) {
+                    setState(() {
+                      _selectedValue = value;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return "can't empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                  items: listOfValue.map((String val) {
+                    return DropdownMenuItem(
+                      value: val,
+                      child: Text(
+                        val,
+                      ),
+                    );
+                  }).toList(),
+                )
+              ],
+            ),
           );
   }
 
