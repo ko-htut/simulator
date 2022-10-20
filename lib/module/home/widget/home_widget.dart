@@ -23,7 +23,11 @@ class HomeWidget extends StatelessWidget {
     if (screenWidth >= 600) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("Home"),
+          title: Observer(
+            builder: (context) {
+              return  Text(_appStore.indextitle);
+            }
+          ),
         ),
         body: Row(
           children: [
@@ -43,7 +47,9 @@ class HomeWidget extends StatelessWidget {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("Home"),
+          title: Observer(builder: (context) {
+            return Text(_appStore.indextitle);
+          }),
         ),
         body: Observer(builder: (context) {
           return getFragment();
