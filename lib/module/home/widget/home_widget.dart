@@ -22,18 +22,8 @@ class _HomeWidgetState extends State<HomeWidget> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     if (screenWidth >= 600) {
-      // wide screen: menu on the left, content on the right
       return Scaffold(
         appBar: AppBar(
-          // 3. add a non-null leading argument if we have a drawer
-          // leading: hasDrawer
-          //     ? IconButton(
-          //         icon: Icon(Icons.menu),
-          //         // 4. open the drawer if we have one
-          //         onPressed:
-          //             hasDrawer ? () => ancestorScaffold!.openDrawer() : null,
-          //       )
-          //     : null,
           title: const Text("Home"),
           // actions: actions,
         ),
@@ -95,7 +85,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       );
     } else {
-      // narrow screen: show content, menu inside drawer
       return Scaffold(
         appBar: AppBar(
           title: const Text("Home"),
@@ -139,14 +128,9 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: (_selectedIndex == 1)
-                      ? BillerProductWidget()
-                      : (_selectedIndex == 2)
-                          ? const EnquiryWidget()
-                          : (_selectedIndex == 3)
-                              ? const ConfirmWidget()
-                              : const BillerCategoryWidget()),
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: getWidget(_selectedIndex),
+              ),
             ),
           ],
         ),
@@ -156,35 +140,20 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       );
     }
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text("Home"),
-    //   ),
-    //   body: SingleChildScrollView(
-    //     physics: const AlwaysScrollableScrollPhysics(),
-    //     child: Column(children: [
-    //       const BillerCategoryWidget(),
-    //       BillerProductWidget(),
-    //       const EnquiryWidget(),
-    //       const ConfirmWidget()
-    //     ]),
-    //   ),
-    // );
   }
 
   Widget getWidget(int selectedIndex) {
     switch (selectedIndex) {
+      case 0:
+        return const BillerCategoryWidget();
       case 1:
         return const BillerProductWidget();
       case 2:
         return const EnquiryWidget();
       case 3:
         return const ConfirmWidget();
-      case 4:
-        return const BillerCategoryWidget();
       default:
-        return const BillerProductWidget();
+        return const BillerCategoryWidget();
     }
   }
 }

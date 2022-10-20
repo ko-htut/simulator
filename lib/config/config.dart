@@ -1,7 +1,7 @@
 class Config {
   static const httpRequestTimeout = 15;
  
-  static const String uatOtherUrl = "43.205.118.250:8080";
+  static const String uatOtherUrl = "65.0.205.77:8080";
   static const String prodOtherUrl = "";
   static const String prodDcbUrl = uatOtherUrl;
 

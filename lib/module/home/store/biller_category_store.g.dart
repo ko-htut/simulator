@@ -9,6 +9,22 @@ part of 'biller_category_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$BillerCategoryStore on _BillerCategoryStoreBase, Store {
+  late final _$isDoneAtom =
+      Atom(name: '_BillerCategoryStoreBase.isDone', context: context);
+
+  @override
+  bool get isDone {
+    _$isDoneAtom.reportRead();
+    return super.isDone;
+  }
+
+  @override
+  set isDone(bool value) {
+    _$isDoneAtom.reportWrite(value, super.isDone, () {
+      super.isDone = value;
+    });
+  }
+
   late final _$isLoadingAtom =
       Atom(name: '_BillerCategoryStoreBase.isLoading', context: context);
 
@@ -56,6 +72,22 @@ mixin _$BillerCategoryStore on _BillerCategoryStoreBase, Store {
     _$billerCategoryResponseAtom
         .reportWrite(value, super.billerCategoryResponse, () {
       super.billerCategoryResponse = value;
+    });
+  }
+
+  late final _$requestBodysAtom =
+      Atom(name: '_BillerCategoryStoreBase.requestBodys', context: context);
+
+  @override
+  Map<String, String>? get requestBodys {
+    _$requestBodysAtom.reportRead();
+    return super.requestBodys;
+  }
+
+  @override
+  set requestBodys(Map<String, String>? value) {
+    _$requestBodysAtom.reportWrite(value, super.requestBodys, () {
+      super.requestBodys = value;
     });
   }
 
@@ -121,9 +153,11 @@ mixin _$BillerCategoryStore on _BillerCategoryStoreBase, Store {
   @override
   String toString() {
     return '''
+isDone: ${isDone},
 isLoading: ${isLoading},
 errorMessage: ${errorMessage},
 billerCategoryResponse: ${billerCategoryResponse},
+requestBodys: ${requestBodys},
 billerCode: ${billerCode},
 channelCode: ${channelCode},
 loglist: ${loglist}

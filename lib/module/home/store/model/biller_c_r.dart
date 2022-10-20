@@ -15,7 +15,7 @@ class BillerCategoryResponse {
 
   String? errorCode;
   String? errorMessage;
-  List<CategoryList>? categoryList;
+  List<CategoryList?>? categoryList;
 
   factory BillerCategoryResponse.fromJson(Map<String, dynamic> json) =>
       BillerCategoryResponse(
@@ -28,7 +28,7 @@ class BillerCategoryResponse {
   Map<String, dynamic> toJson() => {
         "ErrorCode": errorCode,
         "ErrorMessage": errorMessage,
-        "CategoryList": List<dynamic>.from(categoryList!.map((x) => x.toJson())),
+        "CategoryList": List<dynamic>.from(categoryList!.map((x) => x!.toJson())),
       };
 }
 
