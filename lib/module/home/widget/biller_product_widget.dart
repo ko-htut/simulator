@@ -1,29 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:simulator/module/home/store/biller_product_store.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class BillerProductWidget extends StatefulWidget {
- const BillerProductWidget({Key? key}) : super(key: key);
+  const BillerProductWidget({Key? key}) : super(key: key);
 
   @override
   State<BillerProductWidget> createState() => _BillerProductWidgetState();
 }
 
 class _BillerProductWidgetState extends State<BillerProductWidget> {
+final BillerProductStore _billerProductStore =
+      Modular.get<BillerProductStore>();
 
-  // final BillerProductStore _billerProductStore =
-  //     Modular.get<BillerProductStore>();
+  bool isClickedStartPlaying = false;
 
-      @override
+  final _formKey = GlobalKey<FormState>();
+
+  late TextEditingController channelNameController = TextEditingController();
+  late TextEditingController billerCodeController = TextEditingController();
+
+  final FocusNode _channelNameFocus = FocusNode();
+  final FocusNode _billerCodeFocus = FocusNode();
+
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return _item(name: 'Biller Product');
+    return Observer(builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            _item(name: 'Biller Product'),
+            Observer(builder: (context) {
+              if (_billerProductStore.errorMessage.isNotEmpty) {
+                return Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.red),
+                  child: Text(
+                    _billerProductStore.errorMessage,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                );
+              }
+              return const SizedBox();
+            }),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _formList() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          TextFormField(
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            focusNode: _channelNameFocus,
+            controller: channelNameController,
+            textAlignVertical: TextAlignVertical.center,
+            onEditingComplete: () => _channelNameFocus.unfocus(),
+            onFieldSubmitted: (term) =>
+                _fieldFocusChange(context, _channelNameFocus, _billerCodeFocus),
+            decoration: _myInputDecoration(
+              hint: 'Enter your Channel Code',
+            ),
+            cursorColor: Colors.pink,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter your Channel Code';
+              } else {
+                return null;
+              }
+            },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            focusNode: _billerCodeFocus,
+            controller: billerCodeController,
+            onEditingComplete: () => _billerCodeFocus.unfocus(),
+            decoration: _myInputDecoration(
+              hint: 'Enter your Biller Code',
+            ),
+            cursorColor: Colors.pink,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter your Biller Code';
+              } else {
+                return null;
+              }
+            },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          _buttom(
+            name: 'Biller Category',
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _item({
@@ -36,59 +138,7 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        decoration: _myInputDecoration(
-                          hint: 'Enter your Channel Code',
-                        ),
-                        cursorColor: Colors.pink,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please Enter your Channel Code';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        decoration: _myInputDecoration(
-                          hint: 'Enter your Biller Code',
-                        ),
-                        cursorColor: Colors.pink,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please Enter your Biller Code';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      _buttom(
-                        name: name,
-                      ),
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(5.0), child: _formList()),
               ),
               Expanded(
                 child: Column(
@@ -100,16 +150,16 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200]),
                       padding: const EdgeInsets.all(5),
+                      width: double.infinity,
                       margin: const EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text("Request Data"),
-                          JsonViewer(const {
-                            "ChannelCode": "AbankMM",
-                            "BillerCode": "OoredooEload"
-                          }),
+                          (_billerProductStore.requestBodys == null)
+                              ? const Text("Request is null")
+                              : JsonViewer(_billerProductStore.requestBodys),
                         ],
                       ),
                     ),
@@ -118,23 +168,18 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.grey[200]),
                       padding: const EdgeInsets.all(5),
+                      width: double.infinity,
                       margin: const EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text("Response Data"),
-                          JsonViewer(const {
-                            "ErrorCode": "00",
-                            "ErrorMessage": "Success",
-                            "Detail":
-                                "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
-                            "ChannelRefId": "KH090003",
-                            "BillerRefId": null,
-                            "BpaTxnId": "40DA07EA79",
-                            "ChannelAmount": 3250.00,
-                            "TransactionAmount": 3000
-                          }),
+                          (_billerProductStore.billerCategoryResponse == null)
+                              ? const Text("Respnse is null")
+                              : JsonViewer(_billerProductStore
+                                  .billerCategoryResponse!
+                                  .toJson()),
                         ],
                       ),
                     ),
@@ -147,51 +192,7 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.text,
-                decoration: _myInputDecoration(
-                  hint: 'Enter your Channel Code',
-                ),
-                cursorColor: Colors.pink,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Enter your Channel Code';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.text,
-                decoration: _myInputDecoration(
-                  hint: 'Enter your Biller Code',
-                ),
-                cursorColor: Colors.pink,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Enter your Biller Code';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _buttom(
-                name: name,
-              ),
+              _formList(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,6 +201,7 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.grey[200]),
+                    width: double.infinity,
                     padding: const EdgeInsets.all(5),
                     margin: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
@@ -207,10 +209,9 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("Request Data"),
-                        JsonViewer(const {
-                          "ChannelCode": "AbankMM",
-                          "BillerCode": "OoredooEload"
-                        }),
+                        (_billerProductStore.requestBodys == null)
+                            ? const Text("Request is null")
+                            : JsonViewer(_billerProductStore.requestBodys),
                       ],
                     ),
                   ),
@@ -219,23 +220,17 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.grey[200]),
                     padding: const EdgeInsets.all(5),
+                    width: double.infinity,
                     margin: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Response Data"),
-                        JsonViewer(const {
-                          "ErrorCode": "00",
-                          "ErrorMessage": "Success",
-                          "Detail":
-                              "{\"Deno\":\"3000\",\"MobileNumber\":\"09964233241\"}",
-                          "ChannelRefId": "KH090003",
-                          "BillerRefId": null,
-                          "BpaTxnId": "40DA07EA79",
-                          "ChannelAmount": 3250.00,
-                          "TransactionAmount": 3000
-                        }),
+                        (_billerProductStore.billerCategoryResponse == null)
+                            ? const Text("Respnse is null")
+                            : JsonViewer(_billerProductStore
+                                .billerCategoryResponse!
+                                .toJson()),
                       ],
                     ),
                   ),
@@ -248,21 +243,40 @@ class _BillerProductWidgetState extends State<BillerProductWidget> {
   Widget _buttom({
     required String name,
   }) {
-    return Container(
-      height: 45,
-      width: MediaQuery.of(context).size.width > 600
-          ? MediaQuery.of(context).size.width / 2
-          : double.infinity,
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5), color: Colors.indigoAccent),
-      child: Center(
-        child: Text(
-          name,
-          style: const TextStyle(color: Colors.white),
+    return Observer(builder: (context) {
+      if (_billerProductStore.isLoading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return GestureDetector(
+        onTap: () {
+          final FormState? form = _formKey.currentState;
+          if (_formKey.currentState!.validate()) {
+            form!.save();
+            _billerProductStore.getBillerProduct(
+                tchannelCode: channelNameController.text,
+                tbillerCode: billerCodeController.text);
+          }
+        },
+        child: Container(
+          height: 45,
+          width: MediaQuery.of(context).size.width > 600
+              ? MediaQuery.of(context).size.width / 2
+              : double.infinity,
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.indigoAccent),
+          child: Center(
+            child: Text(
+              name,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   void _fieldFocusChange(
