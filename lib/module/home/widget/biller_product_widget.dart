@@ -121,7 +121,7 @@ final BillerProductStore _billerProductStore =
             height: 10,
           ),
           _buttom(
-            name: 'Biller Category',
+            name: 'Biller Product',
           ),
         ],
       ),
@@ -175,10 +175,10 @@ final BillerProductStore _billerProductStore =
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text("Response Data"),
-                          (_billerProductStore.billerCategoryResponse == null)
+                          (_billerProductStore.billerProductResponse == null)
                               ? const Text("Respnse is null")
                               : JsonViewer(_billerProductStore
-                                  .billerCategoryResponse!
+                                  .billerProductResponse!
                                   .toJson()),
                         ],
                       ),
@@ -226,10 +226,10 @@ final BillerProductStore _billerProductStore =
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        (_billerProductStore.billerCategoryResponse == null)
+                        (_billerProductStore.billerProductResponse == null)
                             ? const Text("Respnse is null")
                             : JsonViewer(_billerProductStore
-                                .billerCategoryResponse!
+                                .billerProductResponse!
                                 .toJson()),
                       ],
                     ),

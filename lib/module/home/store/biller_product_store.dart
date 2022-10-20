@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:logger/logger.dart';
 import 'package:mobx/mobx.dart';
 import 'package:simulator/config/config.dart';
+import 'package:simulator/module/home/store/model/biller_c_p.dart';
 import 'package:simulator/module/home/store/model/biller_c_r.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,7 +29,7 @@ abstract class _BillerProductStoreBase with Store {
   late String errorMessage = '';
 
   @observable
-  BillerCategoryResponse? billerCategoryResponse;
+  BillerProductResponse? billerProductResponse;
 
   @observable
   Map<String, String>? requestBodys;
@@ -50,7 +51,7 @@ abstract class _BillerProductStoreBase with Store {
       isLoading = true;
       loglist.clear();
       requestBodys = null;
-      billerCategoryResponse = null;
+      billerProductResponse = null;
       logger.i("get Biller Category");
       loglist.add("get Biller Category");
       var requrestboy = {
@@ -71,8 +72,8 @@ abstract class _BillerProductStoreBase with Store {
       loglist.add(response.request!.headers.toString());
       logger.i(response.body.toString());
       loglist.add(response.request!.headers.toString());
-      var data = billerCategoryResponseFromJson(response.body);
-      billerCategoryResponse = data;
+      var data = billerProductResponseFromJson(response.body);
+      billerProductResponse = data;
       isLoading = false;
       isDone = true;
       logger.i(loglist);
