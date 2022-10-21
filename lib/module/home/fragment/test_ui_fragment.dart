@@ -48,7 +48,31 @@ class _TestUIFragmentState extends State<TestUIFragment> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: _formList(),
+        child: Column(
+          children: [
+            _formList(),
+            Observer(builder: (context) {
+              if (_billerCategoryStore.errorMessage.isNotEmpty ||
+                  _billerProductStore.errorMessage.isNotEmpty ||
+                  _enquiryStore.errorMessage.isNotEmpty ||
+                  _comfirmStore.errorMessage.isNotEmpty) {
+                return Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.red),
+                  child: Text(
+                    "${_billerCategoryStore.errorMessage} ${_billerProductStore.errorMessage}  ${_enquiryStore.errorMessage} ${_comfirmStore.errorMessage}",
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                );
+              }
+              return const SizedBox();
+            }),
+          ],
+        ),
       ),
     );
   }

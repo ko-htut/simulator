@@ -68,6 +68,7 @@ abstract class _BillerProductStoreBase with Store {
           HttpHeaders.contentTypeHeader: 'application/json',
         },
       );
+      
       logger.i(response.request.toString());
       loglist.add(response.request.toString());
       logger.i(response.request!.headers.toString());

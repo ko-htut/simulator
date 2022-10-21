@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new, unnecessary_string_escapes, unnecessary_null_comparison
+// ignore_for_file: unnecessary_new, unnecessary_string_escapes, unnecessary_null_comparison, prefer_interpolation_to_compose_strings
 
 import 'dart:core';
 
