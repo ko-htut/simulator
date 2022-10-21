@@ -57,6 +57,7 @@ abstract class _BillerCategoryStoreBase with Store {
         "BillerCode": tbillerCode
       };
       requestBodys = requrestboy;
+       logger.i(requestBodys);
       var response = await client.post(
         Uri.http(Config.baseOtherUrl, '/BPA/GetBillerCategory'),
         body: json.encode(requrestboy),

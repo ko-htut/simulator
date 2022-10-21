@@ -65,6 +65,7 @@ abstract class _ComfirmStoreBase with Store {
         "Detail": "{\"Deno\":\"$deno\",\"MobileNumber\":\"$mobileNumber\"}"
       };
       requestBodys = requrestboy;
+       logger.i(requestBodys);
       var response = await client.post(
         Uri.http(Config.baseOtherUrl, '/BPA/Confirm'),
         body: json.encode(requrestboy),

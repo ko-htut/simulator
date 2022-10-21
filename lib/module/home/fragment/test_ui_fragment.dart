@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:simulator/module/home/store/api_ui_store.dart';
 import 'package:simulator/module/home/store/biller_category_store.dart';
 import 'package:simulator/module/home/store/biller_product_store.dart';
 import 'package:simulator/module/home/store/comfirm_store.dart';
 import 'package:simulator/module/home/store/enquiry_store.dart';
+import 'package:simulator/module/home/store/model/biller_c_p.dart';
 import 'package:simulator/utils/color_utils.dart';
 
 class TestUIFragment extends StatefulWidget {
@@ -25,6 +27,8 @@ class _TestUIFragmentState extends State<TestUIFragment> {
 
   final ComfirmStore _comfirmStore = Modular.get<ComfirmStore>();
 
+  final ApiUIStore _apiUIStore = Modular.get<ApiUIStore>();
+
   bool isClickedStartPlaying = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -37,8 +41,7 @@ class _TestUIFragmentState extends State<TestUIFragment> {
   final FocusNode _billerCodeFocus = FocusNode();
   final FocusNode _mobileNumberFocus = FocusNode();
 
-  String? _selectedValue;
-  List<String> listOfValue = ['1', '2', '3', '4', '5'];
+  ProductList? _selectedDenoValue;
 
   @override
   Widget build(BuildContext context) {
@@ -82,25 +85,32 @@ class _TestUIFragmentState extends State<TestUIFragment> {
           const SizedBox(
             height: 5,
           ),
-          _field(
-            controller: mobileNumberController,
-            currnetfocusNode: _mobileNumberFocus,
-            text: "Mobile Number",
-            hint: "Mobile Number",
-            validateEmptyMessage: "Biller code can not empty !!!",
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          _dropDown(text: "Channel Type"),
-          const SizedBox(
-            height: 10,
-          ),
-          _dropDown(text: "Transaction Amount"),
-          const SizedBox(
-            height: 10,
-          ),
-          _buttom(name: 'Comfirm'),
+          Observer(builder: (context) {
+            if (_apiUIStore.uiState >= 1) {
+              return Column(
+                children: [
+                  _field(
+                    controller: mobileNumberController,
+                    currnetfocusNode: _mobileNumberFocus,
+                    text: "Mobile Number",
+                    hint: "Mobile Number",
+                    validateEmptyMessage: "Biller code can not empty !!!",
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _dropDown(text: "Transaction Amount"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              );
+            }
+            return const SizedBox();
+          }),
+          Observer(builder: (context) {
+            return _buttom(name: _apiUIStore.indexBtntitle);
+          }),
         ],
       ),
     );
@@ -122,7 +132,7 @@ class _TestUIFragmentState extends State<TestUIFragment> {
                 height: 8,
               ),
               Expanded(
-                  child: DropdownButtonFormField(
+                  child: DropdownButtonFormField<ProductList>(
                 isDense: true,
                 style: const TextStyle(
                     overflow: TextOverflow.ellipsis,
@@ -149,33 +159,34 @@ class _TestUIFragmentState extends State<TestUIFragment> {
                     ),
                   ),
                 ),
-                value: _selectedValue,
+                value: _selectedDenoValue,
                 hint: const Text(
                   'choose one',
                 ),
                 isExpanded: true,
                 onChanged: (value) {
                   setState(() {
-                    _selectedValue = value;
+                    _selectedDenoValue = value;
                   });
                 },
                 onSaved: (value) {
                   setState(() {
-                    _selectedValue = value;
+                    _selectedDenoValue = value;
                   });
                 },
-                validator: (String? value) {
-                  if (value!.isEmpty) {
+                validator: (ProductList? value) {
+                  if (value == null) {
                     return "can't empty";
                   } else {
                     return null;
                   }
                 },
-                items: listOfValue.map((String val) {
+                items: _billerProductStore.billerProductResponse!.productList!
+                    .map((ProductList val) {
                   return DropdownMenuItem(
                     value: val,
                     child: Text(
-                      val,
+                      val.productName!,
                     ),
                   );
                 }).toList(),
@@ -211,7 +222,7 @@ class _TestUIFragmentState extends State<TestUIFragment> {
                 const SizedBox(
                   height: 8,
                 ),
-                DropdownButtonFormField(
+                DropdownButtonFormField<ProductList>(
                   isDense: true,
                   style: const TextStyle(
                       overflow: TextOverflow.ellipsis,
@@ -238,37 +249,38 @@ class _TestUIFragmentState extends State<TestUIFragment> {
                       ),
                     ),
                   ),
-                  value: _selectedValue,
+                  value: _selectedDenoValue,
                   hint: const Text(
                     'choose one',
                   ),
                   isExpanded: true,
                   onChanged: (value) {
                     setState(() {
-                      _selectedValue = value;
+                      _selectedDenoValue = value;
                     });
                   },
                   onSaved: (value) {
                     setState(() {
-                      _selectedValue = value;
+                      _selectedDenoValue = value;
                     });
                   },
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
+                  validator: (ProductList? value) {
+                    if (value == null) {
                       return "can't empty";
                     } else {
                       return null;
                     }
                   },
-                  items: listOfValue.map((String val) {
+                  items: _billerProductStore.billerProductResponse!.productList!
+                      .map((ProductList val) {
                     return DropdownMenuItem(
                       value: val,
                       child: Text(
-                        val,
+                        val.productName!,
                       ),
                     );
                   }).toList(),
-                )
+                ),
               ],
             ),
           );
@@ -392,7 +404,33 @@ class _TestUIFragmentState extends State<TestUIFragment> {
           final FormState? form = _formKey.currentState;
           if (_formKey.currentState!.validate()) {
             form!.save();
-            //
+            if (_apiUIStore.uiState == 0) {
+              _billerCategoryStore
+                  .getBillerCategory(
+                      tchannelCode: channelNameController.text,
+                      tbillerCode: billerCodeController.text)
+                  .then(
+                    (value) => _billerProductStore.getBillerProduct(
+                        tchannelCode: channelNameController.text,
+                        tbillerCode: billerCodeController.text),
+                  );
+            } else if (_apiUIStore.uiState == 1) {
+              _enquiryStore.getEnquiry(
+                  tchannelCode: channelNameController.text,
+                  tbillerCode: billerCodeController.text,
+                  deno: _selectedDenoValue!.productAmount ?? "",
+                  mobileNumber: mobileNumberController.text);
+            } else if (_apiUIStore.uiState == 2) {
+              _comfirmStore.getComfirm(
+                  tchannelCode: channelNameController.text,
+                  tbillerCode: billerCodeController.text,
+                  deno: _selectedDenoValue!.productAmount ?? "",
+                  mobileNumber: mobileNumberController.text,
+                  channelRefId: '',
+                  transactionAmount: int.parse(
+                    _selectedDenoValue!.productAmount ?? "",
+                  ));
+            }
           }
         },
         child: Container(

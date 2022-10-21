@@ -55,10 +55,12 @@ abstract class _BillerProductStoreBase with Store {
       logger.i("get Biller Category");
       loglist.add("get Biller Category");
       var requrestboy = {
-        "ChannelCode": tchannelCode,
-        "BillerCode": tbillerCode
+        "channelCode": tchannelCode,
+        "billerCode": tbillerCode
       };
+
       requestBodys = requrestboy;
+      logger.i(requestBodys);
       var response = await client.post(
         Uri.http(Config.baseOtherUrl, '/BPA/GetBillerProduct'),
         body: json.encode(requrestboy),
@@ -86,5 +88,4 @@ abstract class _BillerProductStoreBase with Store {
       errorMessage = e.toString();
     }
   }
-
 }

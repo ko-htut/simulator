@@ -61,6 +61,7 @@ abstract class _EnquiryStoreBase with Store {
         "Detail": "{\"Deno\":\"$deno\",\"MobileNumber\":\"$mobileNumber\"}"
       };
       requestBodys = requrestboy;
+      logger.i(requestBodys);
       var response = await client.post(
         Uri.http(Config.baseOtherUrl, '/BPA/Enquiry'),
         body: json.encode(requrestboy),

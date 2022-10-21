@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:logger/logger.dart';
 import 'package:simulator/clients/api_clients.dart';
 import 'package:simulator/module/home/respositories/home_repo_impl.dart';
+import 'package:simulator/module/home/store/api_ui_store.dart';
 import 'package:simulator/module/home/store/app_store.dart';
 import 'package:simulator/module/home/store/biller_category_store.dart';
 import 'package:simulator/module/home/store/biller_product_store.dart';
@@ -21,6 +22,7 @@ class AppModule extends Module {
         Bind((i) => APIClient()),
         Bind((i) => APIService.create(i.get<APIClient>())),
         Bind((i) => AppStore()),
+        Bind((i) => ApiUIStore()),
         Bind((i) => BillerCategoryStore()),
         Bind((i) => BillerProductStore()),
         Bind((i) => ComfirmStore()),
